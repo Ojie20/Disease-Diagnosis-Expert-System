@@ -49,6 +49,28 @@
         <h4 class="alert-heading">Diagnosis Result:</h4>
         <p class="mb-0"><strong>{{ diagnosis }}</strong></p>
       </div>
+      {% if confidence_levels %}
+      <div class="mt-4">
+        <h5>Confidence Levels:</h5>
+        <ul class="list-group">
+          {% for disease, confidence in confidence_levels.items() %}
+          <li
+            class="list-group-item d-flex justify-content-between align-items-center"
+          >
+            {{ disease }}
+            <span class="badge bg-primary rounded-pill">{{ confidence }}%</span>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+
+      <div class="text-center mt-3">
+        <small class="text-muted">
+          Disclaimer: This system does not replace professional medical advice.
+          Please consult a healthcare provider for an accurate diagnosis.
+        </small>
+      </div>
       {% endif %}
     </div>
 

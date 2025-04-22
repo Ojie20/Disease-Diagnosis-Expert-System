@@ -17,18 +17,29 @@ SYMPTOMS = sorted({symptom for symptoms in RULES.values() for symptom in symptom
 def index():
     diagnosis = None
     error_message = None
+    confidence_levels = {}
+
     if request.method == 'POST':
         selected_symptoms = set(request.form.getlist('symptoms'))
 
         if not selected_symptoms:
             error_message = "Please select at least one symptom before diagnosing."
-        for disease, disease_symptoms in RULES.items():
-            if disease_symptoms.issubset(selected_symptoms):
-                diagnosis = disease
-                break
-        if not diagnosis:
-            diagnosis = "No clear diagnosis. Please consult a doctor."
-    return render_template('index.html', symptoms=SYMPTOMS, diagnosis=diagnosis, error_message=error_message)
+        else:
+            for disease, disease_symptoms in RULES.items():
+                match_count = len(disease_symptoms.intersection(selected_symptoms))
+                total_symptoms = len(disease_symptoms)
+                confidence = (match_count / total_symptoms) * 100
+                if match_count > 0:
+                    confidence_levels[disease] = round(confidence, 2)
+
+            if confidence_levels:
+                # Pick the disease with the highest confidence as the 'main' diagnosis
+                diagnosis = max(confidence_levels, key=confidence_levels.get)
+            else:
+                diagnosis = "No clear diagnosis. Please consult a doctor."
+
+    return render_template('index.html', symptoms=SYMPTOMS, diagnosis=diagnosis, error_message=error_message, confidence_levels=confidence_levels)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
