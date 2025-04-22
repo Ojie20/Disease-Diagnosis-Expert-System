@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Disease Diagnosis Expert System</title>
+  </head>
+  <body>
+    <h1>Disease Diagnosis Expert System</h1>
+    <form method="post">
+      {% for symptom in symptoms %}
+      <div>
+        <input type="checkbox" name="symptoms" value="{{ symptom }}" /> {{
+        symptom }}
+      </div>
+      {% endfor %}
+      <br />
+      <button type="submit">Diagnose</button>
+    </form>
+
+    {% if diagnosis %}
+    <h2>Diagnosis Result:</h2>
+    <p><strong>{{ diagnosis }}</strong></p>
+    {% endif %}
+  </body>
+</html>
