@@ -16,15 +16,19 @@ SYMPTOMS = sorted({symptom for symptoms in RULES.values() for symptom in symptom
 @app.route('/', methods=['GET', 'POST'])
 def index():
     diagnosis = None
+    error_message = None
     if request.method == 'POST':
         selected_symptoms = set(request.form.getlist('symptoms'))
+
+        if not selected_symptoms:
+            error_message = "Please select at least one symptom before diagnosing."
         for disease, disease_symptoms in RULES.items():
             if disease_symptoms.issubset(selected_symptoms):
                 diagnosis = disease
                 break
         if not diagnosis:
             diagnosis = "No clear diagnosis. Please consult a doctor."
-    return render_template('index.html', symptoms=SYMPTOMS, diagnosis=diagnosis)
+    return render_template('index.html', symptoms=SYMPTOMS, diagnosis=diagnosis, error_message=error_message)
 
 if __name__ == '__main__':
     app.run(debug=True)

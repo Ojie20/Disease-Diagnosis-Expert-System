@@ -40,7 +40,11 @@
         </div>
       </div>
 
-      {% if diagnosis %}
+      {% if error_message %}
+      <div class="alert alert-warning text-center mt-4" role="alert">
+        {{ error_message }}
+      </div>
+      {% endif %} {% if diagnosis %}
       <div class="alert alert-info text-center mt-4" role="alert">
         <h4 class="alert-heading">Diagnosis Result:</h4>
         <p class="mb-0"><strong>{{ diagnosis }}</strong></p>
