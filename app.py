@@ -1,17 +1,33 @@
+import csv
 from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
-# Define some example rules
-RULES = {
-    "Flu": {"fever", "cough", "body ache", "runny nose"},
-    "Common Cold": {"cough", "sneezing", "runny nose"},
-    "Malaria": {"fever", "chills", "sweating"},
-    "COVID-19": {"fever", "cough", "loss of taste", "shortness of breath"}
-}
+#  Define some example rules
+# RULES = {
+#     "Flu": {"fever", "cough", "body ache", "runny nose"},
+#     "Common Cold": {"cough", "sneezing", "runny nose"},
+#     "Malaria": {"fever", "chills", "sweating"},
+#     "COVID-19": {"fever", "cough", "loss of taste", "shortness of breath"}
+# }
 
-# List of possible symptoms
-SYMPTOMS = sorted({symptom for symptoms in RULES.values() for symptom in symptoms})
+#  List of possible symptoms
+# SYMPTOMS = sorted({symptom for symptoms in RULES.values() for symptom in symptoms})
+
+# Load the rules from the CSV
+RULES = {}
+SYMPTOMS = set()
+
+with open('disease_data.csv', 'r') as csvfile:
+    reader = csv.DictReader(csvfile)
+    for row in reader:
+        disease = row['disease']
+        symptoms_list = row['symptoms'].split(';')
+        RULES[disease] = set(symptoms_list)
+        SYMPTOMS.update(symptoms_list)
+
+SYMPTOMS = sorted(SYMPTOMS)  
+
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
