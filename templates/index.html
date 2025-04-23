@@ -1,79 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Disease Diagnosis Expert System</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-  </head>
-  <body class="bg-light">
-    <div class="container py-5">
-      <h1 class="text-center mb-4">Disease Diagnosis Expert System</h1>
+<head>
+  <meta charset="UTF-8">
+  <title>Medical Diagnosis System</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+  <div class="container mt-5">
+    <h2 class="mb-4">Medical Diagnosis Expert System</h2>
 
-      <div class="card shadow-sm">
-        <div class="card-body">
-          <form method="post">
-            <div class="row">
-              {% for symptom in symptoms %}
-              <div class="col-md-4 mb-2">
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    name="symptoms"
-                    value="{{ symptom }}"
-                    id="{{ symptom }}"
-                  />
-                  <label class="form-check-label" for="{{ symptom }}">
-                    {{ symptom }}
-                  </label>
-                </div>
-              </div>
-              {% endfor %}
-            </div>
-            <div class="text-center mt-4">
-              <button type="submit" class="btn btn-primary">Diagnose</button>
-            </div>
-          </form>
+    {% if error %}
+    <div class="alert alert-danger">{{ error }}</div>
+    {% endif %}
+
+    <form method="POST" class="mb-4">
+      <div class="row">
+        {% for symptom in symptoms %}
+        <div class="col-md-4">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="symptoms" value="{{ symptom }}"
+                   id="{{ symptom }}" {% if selected and symptom in selected %}checked{% endif %}>
+            <label class="form-check-label" for="{{ symptom }}">{{ symptom.replace("_", " ").title() }}</label>
+          </div>
         </div>
+        {% endfor %}
       </div>
+      <button type="submit" class="btn btn-primary mt-3">Diagnose</button>
+    </form>
 
-      {% if error_message %}
-      <div class="alert alert-warning text-center mt-4" role="alert">
-        {{ error_message }}
-      </div>
-      {% endif %} {% if diagnosis %}
-      <div class="alert alert-info text-center mt-4" role="alert">
-        <h4 class="alert-heading">Diagnosis Result:</h4>
-        <p class="mb-0"><strong>{{ diagnosis }}</strong></p>
-      </div>
-      {% if confidence_levels %}
-      <div class="mt-4">
-        <h5>Confidence Levels:</h5>
-        <ul class="list-group">
-          {% for disease, confidence in confidence_levels.items() %}
-          <li
-            class="list-group-item d-flex justify-content-between align-items-center"
-          >
-            {{ disease }}
-            <span class="badge bg-primary rounded-pill">{{ confidence }}%</span>
-          </li>
-          {% endfor %}
-        </ul>
-      </div>
-      {% endif %}
+    {% if forward and decision %}
+    <hr>
+    <h4>Diagnosis Results</h4>
 
-      <div class="text-center mt-3">
-        <small class="text-muted">
-          Disclaimer: This system does not replace professional medical advice.
-          Please consult a healthcare provider for an accurate diagnosis.
-        </small>
-      </div>
-      {% endif %}
+    <h5 class="mt-3">🧠 Forward Chaining Results:</h5>
+    <ul>
+      {% for disease, confidence in forward %}
+      <li>{{ disease.title() }} — Confidence: {{ confidence }}%</li>
+      {% endfor %}
+    </ul>
+
+    <h5 class="mt-3">🌳 Decision Tree Prediction:</h5>
+    <p><strong>{{ decision[0].title() }}</strong> — Confidence: {{ decision[1] }}%</p>
+
+    <div class="alert alert-warning mt-4">
+      <strong>Disclaimer:</strong> This system is for educational purposes only and does not replace professional medical advice.
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  </body>
+    {% endif %}
+  </div>
+</body>
 </html>
