@@ -37,3 +37,43 @@ Identify diseases from symptoms using rule-based logic
 7. Display confidence levels for each diagnosis. 
 8. Add a medical disclaimer. 
 9. Test with various verified symptom combinations.
+
+
+
+# 🩺 Medical Diagnosis Expert System
+
+SECRET_KEY=secret_key
+
+This Flask-based expert system predicts diseases using two AI approaches:
+
+- ✅ **Forward Chaining (Rule-Based)**
+- ✅ **Decision Tree Classifier (Data-Driven)**
+
+Users select symptoms from a checklist, and the system returns probable diseases with confidence levels.
+
+---
+
+## 🚀 Features
+
+- ✔ Interactive web form with checkboxes for symptoms
+- ✔ Single-page result display
+- ✔ Uses both **rule-based inference** and **machine learning**
+- ✔ Trained on a medically structured dataset
+- ✔ Fast, lightweight, and responsive UI
+
+---
+
+## ⚙️ How to Run
+
+### 🔧 Setup
+bash
+# Create virtual environment
+python -m venv venv
+source venv/bin/activate  # or .\venv\Scripts\activate on Windows
+
+# Install dependencies
+pip install -r requirements.txt
+
+# run application
+bash
+run "python app.py" and navigate to the specified url
