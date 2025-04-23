@@ -42,6 +42,8 @@ Identify diseases from symptoms using rule-based logic
 
 # 🩺 Medical Diagnosis Expert System
 
+SECRET_KEY=secret_key
+
 This Flask-based expert system predicts diseases using two AI approaches:
 
 - ✅ **Forward Chaining (Rule-Based)**
